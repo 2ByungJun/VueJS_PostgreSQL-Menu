@@ -15,6 +15,14 @@
 > - vue 2.x
 
 ## 적용
+
+### 2020-01-09
+> - pageUpdate
+> - validation
+> - Exception
+> - sideBar fixed
+> - props, emit
+
 ### 2020-01-08
 > - router, vuex Create
 > - bootstrapVue

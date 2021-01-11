@@ -6,12 +6,18 @@
         title="Sidebar" 
         bg-variant="dark" 
         text-variant="light" 
-        shadow>
+        shadow visible
+        no-close-on-route-change
+        no-close-on-esc
+        no-close-on-backdrop
+        no-header-close
+        width="30vh"
+        >
         <div class="px-3 py-2">
             <nav class="mb-3">
                 <b-nav vertical>
                     <b-nav-item ><router-link to="/">페이지</router-link></b-nav-item>
-                    <b-nav-item > <router-link to="/about">About</router-link></b-nav-item>
+                    <b-nav-item > <router-link to="/menu">메뉴</router-link></b-nav-item>
                 </b-nav>
             </nav>
         </div>

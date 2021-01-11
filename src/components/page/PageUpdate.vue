@@ -2,7 +2,6 @@
     <b-card>
         <b-form 
             @submit="onSubmit" 
-            @reset="onReset" 
             >
             <b-row>
                 <b-form-group
@@ -66,39 +65,48 @@
                 </b-form-group>
             </b-row>
 
-            <b-button type="submit" variant="outline-success">추가</b-button>
+            <b-button type="submit" variant="outline-success">수정</b-button>
             <b-button @click="cancel" variant="outline-danger">닫기</b-button>
-            <b-button type="reset" variant="outline-warning">초기화</b-button>
         </b-form>
     </b-card>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            form: {
-                pageNm: '',
-                pageNmEn: '',
-                url: '/',
-                registId: 'admin',
-            },
+    props: {
+        pageProps: Object
+    },
+    computed:{
+        form(){
+            if(!this.pageProps.page){
+                // undefined
+                return{
+                    pageNm: '',
+                    pageNmEn: '',
+                    url: '',
+                    registId: ''
+                }
+            }else{
+                return {
+                    pageSeq: this.pageProps.page.pageSeq,
+                    pageNm: this.pageProps.page.pageNm,
+                    pageNmEn: this.pageProps.page.pageNmEn,
+                    url: this.pageProps.page.url,
+                    registId: this.pageProps.page.registId
+                }
+            }
+            
         }
     },
     methods: {
         onSubmit(event) {
             event.preventDefault()
-            this.$store.dispatch('page/insertPage', this.form)
-        },
-        onReset(event) {
-            event.preventDefault()
-            this.form.pageNm = ''
-            this.form.pageNmEn = ''
-            this.form.url = '/'
-            this.form.registId = ''
+            console.log(this.form)
+            this.$store.dispatch('page/updatePage', this.form)
         },
         cancel(){
-            this.$store.state.page.insertBtn = false
+            this.$store.state.page.updateBtn = false
+            this.$store.state.page.selectMode = 'multi'
         }
     }
 }

@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-    <SideBar />
-    <div class="container">
+  <div id="app" style="width:100%">
+    <div style="width: 30vh">
+      <SideBar />
+    </div>
+    <div class="container" style="width: 80%">
       <router-view/>
     </div>
   </div>
@@ -18,8 +20,5 @@ export default {
 </script>
 
 <style scoped>
-  div.container{
-    max-width: 960px;
-  } 
 
 </style>

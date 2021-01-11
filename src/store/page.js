@@ -4,7 +4,9 @@ export default {
     namespaced: true, 
     state: () => ({
         pages: [],
-        addBtn: false,
+        insertBtn: false,
+        updateBtn: false,
+        selectMode: 'multi',
     }),
     mutations: {
         updateState(state, payload){
@@ -18,7 +20,6 @@ export default {
             })
         },
         async insertPage({commit}, data){
-            console.log(data)
             await axios.post('/vue/insertPage', data).then((res)=>{
                 commit('updateState', res.data)
             })
