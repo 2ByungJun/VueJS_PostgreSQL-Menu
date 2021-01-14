@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="width:100%">
-    <div style="width: 30vh">
+    <div>
       <SideBar />
     </div>
     <div class="container" style="width: 80%">

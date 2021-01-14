@@ -2,14 +2,14 @@
     <div>
         <button @click="addNode">Add Node</button>
         <vue-tree-list
-        @click="onClick"
-        @change-name="onChangeName"
-        @delete-node="onDel"
-        @add-node="onAddNode"
-        :model="data"
-        default-tree-node-name="new node"
-        default-leaf-node-name="new leaf"
-        v-bind:default-expanded="false"
+            @click="onClick"
+            @change-name="onChangeName"
+            @delete-node="onDel"
+            @add-node="onAddNode"
+            :model="data"
+            default-tree-node-name="new node"
+            default-leaf-node-name="new leaf"
+            v-bind:default-expanded="false"
         >
         <template v-slot:leafNameDisplay="slotProps">
             <span>

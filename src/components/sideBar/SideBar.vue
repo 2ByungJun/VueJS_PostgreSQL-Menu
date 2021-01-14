@@ -10,7 +10,6 @@
         no-close-on-route-change
         no-close-on-esc
         no-close-on-backdrop
-        no-header-close
         width="30vh"
         >
         <div class="px-3 py-2">
