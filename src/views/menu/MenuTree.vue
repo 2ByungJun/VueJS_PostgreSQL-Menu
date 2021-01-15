@@ -1,28 +1,30 @@
 <template>
     <div>
         <button @click="addNode">Add Node</button>
+        <br><br>
+        <!-- default-expanded : true(펼쳐있는 상태)/false(접힌 상태) -->
         <vue-tree-list
             @click="onClick"
             @change-name="onChangeName"
             @delete-node="onDel"
             @add-node="onAddNode"
             :model="data"
-            default-tree-node-name="new node"
-            default-leaf-node-name="new leaf"
-            v-bind:default-expanded="false"
-        >
+            default-tree-node-name="new folder"
+            default-leaf-node-name="new file"
+            v-bind:default-expanded="false" 
+        > 
         <template v-slot:leafNameDisplay="slotProps">
-            <span>
-            {{ slotProps.model.name }} <span class="muted">#{{ slotProps.model.id }}</span>
-            </span>
+            <span>{{ slotProps.model.name }}</span>
         </template>
         <span class="icon" slot="addTreeNodeIcon">📂</span>
-        <span class="icon" slot="addLeafNodeIcon">＋</span>
-        <span class="icon" slot="editNodeIcon">📃</span>
-        <span class="icon" slot="delNodeIcon">✂️</span>
-        <span class="icon" slot="leafNodeIcon">🍃</span>
-        <span class="icon" slot="treeNodeIcon">🌲</span>
+        <span class="icon" slot="addLeafNodeIcon">📄</span>
+        <span class="icon" slot="editNodeIcon">📝</span>
+        <span class="icon" slot="delNodeIcon">❌</span>
+        <span class="icon" slot="leafNodeIcon">📄</span>
+        <span class="icon" slot="treeNodeIcon">📂</span>
         </vue-tree-list>
+        <br><br>
+
         <button @click="getNewTree">Get new tree</button>
         <pre>
         {{newTree}}
@@ -32,6 +34,8 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { mapActions } from 'vuex'
+
 export default {
     components: {
         VueTreeList
@@ -39,64 +43,41 @@ export default {
     data() {
         return {
             newTree: {},
-            data: new Tree([
-            {
-                name: 'Node 1',
-                id: 1,
-                pid: 0,
-                dragDisabled: true,
-                addTreeNodeDisabled: true,
-                addLeafNodeDisabled: true,
-                editNodeDisabled: true,
-                delNodeDisabled: true,
-                children: [
-                {
-                    name: 'Node 1-2',
-                    id: 2,
-                    isLeaf: true,
-                    pid: 1
-                }
-                ]
-            },
-            {
-                name: 'Node 2',
-                id: 3,
-                pid: 0,
-                disabled: true
-            },
-            {
-                name: 'Node 3',
-                id: 4,
-                pid: 0
-            }
-            ])
+            data: new Tree(this.$store.state.menu.menus)
         }
     },
+    mounted(){
+        this.selectMenus()
+    },
     methods: {
+        ...mapActions('menu' ,[
+            'selectMenus'
+        ]),
+        onClick(params) {
+            console.log('---onClick---')
+            console.log(params)
+        },
         onDel(node) {
+            console.log('---onDel---')
             console.log(node)
             node.remove()
         },
-
         onChangeName(params) {
+            console.log('---onChangeName---')
             console.log(params)
         },
-
         onAddNode(params) {
+            console.log('---onAddNode---')
             console.log(params)
         },
-
-        onClick(params) {
-            console.log(params)
-        },
-
         addNode() {
+            console.log('---addNode---')
             var node = new TreeNode({ name: 'new node', isLeaf: false })
             if (!this.data.children) this.data.children = []
             this.data.addChildren(node)
         },
-
         getNewTree() {
+            console.log('---getNewTree---')
             var vm = this
             function _dfs(oldNode) {
             var newNode = {}

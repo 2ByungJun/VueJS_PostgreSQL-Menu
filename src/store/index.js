@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import page from './page'
-import menu from './menu'
+import page from './modules/page'
+import menu from './modules/menu'
 
 Vue.use(Vuex)
 

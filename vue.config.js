@@ -5,8 +5,8 @@ module.exports = {
     https: false,
     hotOnly: true,
     proxy: {
-      '/': {
-        target: 'http://localhost:8080/',
+      '/vue': {
+        target: 'http://localhost:8080',
         ws: false,
         changeOrigin: true
       }
