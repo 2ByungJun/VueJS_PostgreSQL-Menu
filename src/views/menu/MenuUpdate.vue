@@ -9,7 +9,7 @@
                     label-for="input-2">
                         <b-form-input
                         id="input-1"
-                        v-model="form.email"
+                        v-model="form.name"
                         placeholder="메뉴명"
                         required
                         ></b-form-input>
@@ -22,8 +22,8 @@
                     label-for="input-2">
                         <b-form-select
                         id="input-2"
-                        v-model="form.food"
-                        :options="foods"
+                        v-model="form.useAt"
+                        :options="useAt"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -37,8 +37,8 @@
                     label-for="input-3">
                         <b-form-select
                         id="input-3"
-                        v-model="form.food"
-                        :options="foods"
+                        v-model="form.useAt"
+                        :options="useAt"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -50,8 +50,8 @@
                     label-for="input-4">
                         <b-form-select
                         id="input-4"
-                        v-model="form.food"
-                        :options="foods"
+                        v-model="form.useAt"
+                        :options="useAt"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -59,16 +59,28 @@
             </b-row>
             <b-row>
                 <b-col cols="6">
-                <b-form-group 
-                id="input-group-5" 
-                label="정렬순서*" 
-                label-for="input-5">
-                    <b-form-input
-                    id="input-5"
-                    v-model="form.name"
-                    required
-                    ></b-form-input>
-                </b-form-group>
+                    <b-form-group 
+                    id="input-group-5" 
+                    label="정렬순서*" 
+                    label-for="input-5">
+                        <b-form-input
+                        id="input-5"
+                        v-model="form.pid"
+                        required
+                        ></b-form-input>
+                    </b-form-group>
+                </b-col>
+                <b-col cols="6">
+                    <b-form-group 
+                    id="input-group-5" 
+                    label="메뉴아이디" 
+                    label-for="input-5">
+                        <b-form-input
+                        id="input-5"
+                        v-model="form.id"
+                        required
+                        ></b-form-input>
+                    </b-form-group>
                 </b-col>
             </b-row>
 
@@ -79,19 +91,16 @@
 
 <script>
 export default {
+    computed :{
+        form(){
+            return this.$store.state.menu.menu
+        }
+    },
     data() {
-    return {
-        form: {
-        email: '',
-        name: '',
-        food: null,
-        checked: []
-        },
-        foods: [
-            { text: 'Select One', value: null }, 
-            'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        show: true
-    }
+        return {
+            useAt: ['사용', '미사용'],
+            show: true
+        }
     },
     methods: {
     onSubmit(event) {

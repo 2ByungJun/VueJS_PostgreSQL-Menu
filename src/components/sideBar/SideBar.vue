@@ -6,12 +6,13 @@
         title="Sidebar" 
         bg-variant="dark" 
         text-variant="light" 
-        shadow visible
-        no-close-on-route-change
-        no-close-on-esc
-        no-close-on-backdrop
+        shadow 
         width="30vh"
         >
+        <!-- no-close-on-route-change
+        no-close-on-esc
+        no-close-on-backdrop 
+        visible-->
         <div class="px-3 py-2">
             <nav class="mb-3">
                 <b-nav vertical>

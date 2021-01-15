@@ -1,6 +1,8 @@
+<!-- npm vue-tree-list는 onClick, add ... 등 메서드들이 정해져있으므로 컨트롤하기가 어렵다. -->
+
 <template>
     <div>
-        <button @click="addNode">Add Node</button>
+        <button @click="addNode">폴더 추가</button>
         <br><br>
         <!-- default-expanded : true(펼쳐있는 상태)/false(접힌 상태) -->
         <vue-tree-list
@@ -9,18 +11,17 @@
             @delete-node="onDel"
             @add-node="onAddNode"
             :model="data"
-            default-tree-node-name="new folder"
-            default-leaf-node-name="new file"
+            default-tree-node-name="new node"
             v-bind:default-expanded="false" 
         > 
         <template v-slot:leafNameDisplay="slotProps">
             <span>{{ slotProps.model.name }}</span>
         </template>
         <span class="icon" slot="addTreeNodeIcon">📂</span>
-        <span class="icon" slot="addLeafNodeIcon">📄</span>
+        <span class="icon" slot="addLeafNodeIcon">＋</span>
         <span class="icon" slot="editNodeIcon">📝</span>
-        <span class="icon" slot="delNodeIcon">❌</span>
-        <span class="icon" slot="leafNodeIcon">📄</span>
+        <span class="icon" slot="delNodeIcon">✂️</span>
+        <span class="icon" slot="leafNodeIcon">📃</span>
         <span class="icon" slot="treeNodeIcon">📂</span>
         </vue-tree-list>
         <br><br>
@@ -34,7 +35,6 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
-import { mapActions } from 'vuex'
 
 export default {
     components: {
@@ -47,15 +47,12 @@ export default {
         }
     },
     mounted(){
-        this.selectMenus()
+        this.$store.dispatch('menu/selectMenus')
     },
     methods: {
-        ...mapActions('menu' ,[
-            'selectMenus'
-        ]),
         onClick(params) {
             console.log('---onClick---')
-            console.log(params)
+            this.$store.commit('menu/onClickMenu', params)
         },
         onDel(node) {
             console.log('---onDel---')
@@ -72,7 +69,11 @@ export default {
         },
         addNode() {
             console.log('---addNode---')
-            var node = new TreeNode({ name: 'new node', isLeaf: false })
+            var node = new TreeNode({ 
+                name: 'new node', 
+                isLeaf: false,
+                addLeafNodeDisabled: true,
+            })
             if (!this.data.children) this.data.children = []
             this.data.addChildren(node)
         },
