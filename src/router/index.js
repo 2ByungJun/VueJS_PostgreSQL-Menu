@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Page from '../views/Page.vue'
 import Menu from '../views/Menu.vue'
+import Copy from '../views/Copy.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/menu',
     name: 'Menu',
     component: Menu
+  },
+  {
+    path: '/copy',
+    name: 'Copy',
+    component: Copy
   }
 ]
 

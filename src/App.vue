@@ -1,9 +1,9 @@
 <template>
-  <div id="app" style="width:100%">
+  <div id="app">
     <div>
       <SideBar />
     </div>
-    <div class="container" style="width: 80%">
+    <div class="container" >
       <router-view/>
     </div>
   </div>

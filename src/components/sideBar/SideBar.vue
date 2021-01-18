@@ -17,7 +17,7 @@
             <nav class="mb-3">
                 <b-nav vertical>
                     <b-nav-item ><router-link to="/">페이지</router-link></b-nav-item>
-                    <b-nav-item > <router-link to="/menu">메뉴</router-link></b-nav-item>
+                    <b-nav-item ><router-link to="/menu">메뉴</router-link></b-nav-item>
                 </b-nav>
             </nav>
         </div>

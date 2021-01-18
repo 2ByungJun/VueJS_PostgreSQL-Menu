@@ -43,11 +43,11 @@ export default {
     data() {
         return {
             newTree: {},
-            data: new Tree(this.$store.state.menu.menus)
+            data: new Tree(this.$store.state.menu.menus),
         }
     },
     mounted(){
-        this.$store.dispatch('menu/selectMenus')
+        //this.$store.dispatch('menu/selectMenus')
     },
     methods: {
         onClick(params) {
