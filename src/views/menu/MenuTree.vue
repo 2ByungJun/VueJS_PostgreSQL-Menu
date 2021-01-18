@@ -10,7 +10,7 @@
             @change-name="onChangeName"
             @delete-node="onDel"
             @add-node="onAddNode"
-            :model="data"
+            :model="menu"
             default-tree-node-name="new node"
             v-bind:default-expanded="false" 
         > 
@@ -40,14 +40,18 @@ export default {
     components: {
         VueTreeList
     },
+    computed:{
+        menu(){
+            return new Tree(this.$store.state.menu.menus)
+        }
+    },
     data() {
         return {
             newTree: {},
-            data: new Tree(this.$store.state.menu.menus),
         }
     },
     mounted(){
-        //this.$store.dispatch('menu/selectMenus')
+        this.$store.dispatch('menu/selectMenus')
     },
     methods: {
         onClick(params) {

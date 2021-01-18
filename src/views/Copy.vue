@@ -59,7 +59,7 @@ export default {
     methods:{
         aa(){
             var array = ['사과', '포도', '바나나']
-            var name = []
+            var name = ''
 
             for(var i=0; i<1; i++){
                 name = '망고'
@@ -78,10 +78,12 @@ export default {
 
             for(var i=0; i<1; i++){
                 temp.name = '망고'
-                array.push(temp)
+                array.push(temp.name)
+                // array.push(temp)  // temp의 주소값을 바라보게 함
 
-                temp.name = '딸기' 
-                array.push(temp)
+                temp.name = '딸기'  
+                array.push(temp.name)
+                // array.push(temp)
             }
             this.testb = array
         },
