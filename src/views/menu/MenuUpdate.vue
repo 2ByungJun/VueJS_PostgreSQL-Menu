@@ -90,6 +90,9 @@ export default {
             return this.$store.state.menu.pageOptions
         },
     },
+    created(){
+        //this.$store.dispatch('menu/selectPidOptions')
+    },
     data() {
         return {
             useAtOptions: ['사용', '미사용'],

@@ -14,6 +14,10 @@
       <b-card title="메뉴 정보">
         <MenuUpdate />
       </b-card>
+      <br>
+      <b-card title="페이지 정보">
+        <PageTable />
+      </b-card>
     </b-col>
   </b-row>
   </div>
@@ -22,11 +26,13 @@
 <script>
 import MenuTree from '@/views/menu/MenuTree.vue'
 import MenuUpdate from '@/views/menu/MenuUpdate.vue'
+import PageTable from '@/views/menu/PageTable.vue'
 
 export default {
   components:{
     MenuTree,
     MenuUpdate,
+    PageTable,
   }
 }
 </script>

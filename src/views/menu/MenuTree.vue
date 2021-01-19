@@ -1,5 +1,3 @@
-<!-- npm vue-tree-list는 onClick, add ... 등 메서드들이 정해져있으므로 컨트롤하기가 어렵다. -->
-
 <template>
     <div>
         <!-- <button @click="addNode">폴더 추가</button> -->
@@ -51,6 +49,7 @@ export default {
         onClick(params) {
             if(String(params.id).length > 10){
                 // 새로 생성된 항목 클릭시
+                console.log(params)
             }else{
                 // 기존 항목 클릭시
                 this.$store.dispatch('menu/selectPageOptions', params)

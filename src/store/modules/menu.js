@@ -17,16 +17,20 @@ export default {
         },
         pidOptions : [],
         pageOptions: [],
+        page: [],
     }),
     mutations: {
-        updateMenus(state, payload){
+        updateMenus(state, payload){ // 메뉴정보
           state.menus = payload
         },
-        updatePidOptions(state, payload){
+        updatePidOptions(state, payload){ // 상위메뉴
           state.pidOptions = payload
         },
-        updatePageOptions(state, payload){
+        updatePageOptions(state, payload){ // 메뉴 정보> 대표 URL
           state.pageOptions = payload
+        },
+        updatePageList(state, payload){ // 페이지 정보> 페이지 데이터
+          state.page = payload
         },
         // MenuUpdate에서 메뉴를 클릭시 정보를 전달
         onClickMenu(state, payload){
@@ -42,47 +46,55 @@ export default {
         },
     },
     actions: {
+        // 전체 페이지 url 
+        // async selectPidOptions({commit}, data){
+        //   console.log(data)
+        //   await commit('onClickMenu', data)
+        //   await axios.get('/vue/selectPageUrlList').then((res) => {
+        //     var data = res.data
+        //     var array = new Array()
+        //     for(var i=0; i<data.length; i++){
+        //       array.push(data[i].url)
+        //     }
+        //     commit('updatePageOptions', array)
+        //   })
+        // },
+
+        // 메뉴 클릭시 관련 페이지 정보 호출 액션
         async selectPageOptions({commit}, data){
-          await commit('onClickMenu', data)
-          await axios.post('/vue/selectPageOptionList', data.id ).then((res) => {
-            var data = res.data
-            var array = new Array()
-            for(var i=0; i<data.length; i++){
-              array.push(data[i].url)
-            }
-            commit('updatePageOptions', array)
-          })
+          await commit('onClickMenu', data) 
+            await axios.post('/vue/selectPageOptionList', data.id ).then((res) => {
+              commit('updatePageList', res.data)
+            })
         },
-        // 메뉴 불러오기 액션
+        
+        // 메뉴 리스트 트리형태 호출 액션
         async selectMenus({commit}){
           await axios.get('/vue/selectMenuList').then((res) => {
               var data = res.data
-              console.log('data', data)
               var tree = new Array()
               var array = new Array()
-              var pidArray = new Array()
               for(var i=0; i<data.length; i++){
                 /*
-                 * temp : vue-tree-list용 객체
-                 * child : temp 객체를 담음(파일)
+                 * temp : vue-tree-list용 가공객체
+                 * child : 가공된 객체(temp)를 담음(파일)
                  * parent : child의 pid와 일치하는 id값을 가져옴(폴더)
                  */
                   var temp = {
-                    "id": parseInt(data[i].menuSeq), // menuSeq
-                    "isLeaf": data[i].isLeaf == "Y" ? true : false,
-                    "name": data[i].menuNm,
-                    "pid": parseInt(data[i].upperMenuSeq), // upperMenuSeq
-                    "useAt": data[i].useAt == "Y" ? "사용" : "미사용",
-                    "url": data[i].url,
-                    "colOrd": data[i].colOrd,
-                    "pageSeq": data[i].pageSeq,
-                    "upperMenuNm": data[i].upperMenuNm,
-                    "level": data[i].level,
+          /*menuSeq*/"id": parseInt(data[i].menuSeq), 
+          /*isLeaf*/ "isLeaf": data[i].isLeaf == "Y" ? true : false,
+          /*menuNm*/ "name": data[i].menuNm, 
+    /*uppperMenuSeq*/"pid": parseInt(data[i].upperMenuSeq), 
+            /*ustAt*/"useAt": data[i].useAt == "Y" ? "사용" : "미사용",
+              /*url*/"url": data[i].url,
+          /*colOrd*/ "colOrd": data[i].colOrd,
+          /*pageSeq*/"pageSeq": data[i].pageSeq,
+      /*upperMenuNm*/"upperMenuNm": data[i].upperMenuNm,
+            /*level*/"level": data[i].level,
+        /*드래그방지*/"dragDisabled": true,
                     "children": [],
-                    "dragDisabled": true,
                   }
                   array.push(temp)
-                  pidArray.push(temp.upperMenuNm)
                   var child = temp
                   var parent = array.find(tmp => tmp.id === child.pid)
                   
@@ -103,7 +115,6 @@ export default {
                       break
                   }
                 }
-                commit('updatePidOptions', pidArray)
                 commit('updateMenus', tree)
           })
         }
