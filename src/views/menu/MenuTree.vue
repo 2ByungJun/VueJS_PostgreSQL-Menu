@@ -2,8 +2,7 @@
 
 <template>
     <div>
-        <button @click="addNode">폴더 추가</button>
-        <br><br>
+        <!-- <button @click="addNode">폴더 추가</button> -->
         <!-- default-expanded : true(펼쳐있는 상태)/false(접힌 상태) -->
         <vue-tree-list
             @click="onClick"
@@ -12,24 +11,19 @@
             @add-node="onAddNode"
             :model="menu"
             default-tree-node-name="new node"
-            v-bind:default-expanded="false" 
+            v-bind:default-expanded="true" 
         > 
         <template v-slot:leafNameDisplay="slotProps">
             <span>{{ slotProps.model.name }}</span>
         </template>
-        <span class="icon" slot="addTreeNodeIcon">📂</span>
-        <span class="icon" slot="addLeafNodeIcon">＋</span>
+        <span class="icon" slot="addTreeNodeIcon" style="display:none">📂</span>
+        <span class="icon" slot="addLeafNodeIcon">📃</span>
         <span class="icon" slot="editNodeIcon">📝</span>
         <span class="icon" slot="delNodeIcon">✂️</span>
         <span class="icon" slot="leafNodeIcon">📃</span>
         <span class="icon" slot="treeNodeIcon">📂</span>
         </vue-tree-list>
         <br><br>
-
-        <button @click="getNewTree">Get new tree</button>
-        <pre>
-        {{newTree}}
-        </pre>
     </div>
 </template>
 
@@ -55,7 +49,12 @@ export default {
     },
     methods: {
         onClick(params) {
-            this.$store.commit('menu/onClickMenu', params)
+            if(String(params.id).length > 10){
+                // 새로 생성된 항목 클릭시
+            }else{
+                // 기존 항목 클릭시
+                this.$store.dispatch('menu/selectPageOptions', params)
+            }
         },
         onDel(node) {
             console.log('---onDel---')
@@ -63,8 +62,10 @@ export default {
             node.remove()
         },
         onChangeName(params) {
-            console.log('---onChangeName---')
-            console.log(params)
+            if(params.eventTpye == "blur"){
+                console.log('---onChangeName---')
+                console.log(params)
+            }
         },
         onAddNode(params) {
             console.log('---onAddNode---')

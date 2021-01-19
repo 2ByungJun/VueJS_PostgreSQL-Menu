@@ -12,11 +12,21 @@ export default {
           useAt: '',
           pageSeq:'',
           colOrd: '',
+          url: '',
+          upperMenuNm: '',
         },
+        pidOptions : [],
+        pageOptions: [],
     }),
     mutations: {
-        updateState(state, payload){
+        updateMenus(state, payload){
           state.menus = payload
+        },
+        updatePidOptions(state, payload){
+          state.pidOptions = payload
+        },
+        updatePageOptions(state, payload){
+          state.pageOptions = payload
         },
         // MenuUpdate에서 메뉴를 클릭시 정보를 전달
         onClickMenu(state, payload){
@@ -27,15 +37,30 @@ export default {
           state.menu.useAt = payload.useAt
           state.menu.pageSeq = payload.pageSeq
           state.menu.colOrd = payload.colOrd
+          state.menu.url = payload.url
+          state.menu.upperMenuNm = payload.upperMenuNm
         },
     },
     actions: {
+        async selectPageOptions({commit}, data){
+          await commit('onClickMenu', data)
+          await axios.post('/vue/selectPageOptionList', data.id ).then((res) => {
+            var data = res.data
+            var array = new Array()
+            for(var i=0; i<data.length; i++){
+              array.push(data[i].url)
+            }
+            commit('updatePageOptions', array)
+          })
+        },
         // 메뉴 불러오기 액션
         async selectMenus({commit}){
           await axios.get('/vue/selectMenuList').then((res) => {
               var data = res.data
+              console.log('data', data)
               var tree = new Array()
               var array = new Array()
+              var pidArray = new Array()
               for(var i=0; i<data.length; i++){
                 /*
                  * temp : vue-tree-list용 객체
@@ -48,13 +73,16 @@ export default {
                     "name": data[i].menuNm,
                     "pid": parseInt(data[i].upperMenuSeq), // upperMenuSeq
                     "useAt": data[i].useAt == "Y" ? "사용" : "미사용",
+                    "url": data[i].url,
                     "colOrd": data[i].colOrd,
                     "pageSeq": data[i].pageSeq,
+                    "upperMenuNm": data[i].upperMenuNm,
                     "level": data[i].level,
                     "children": [],
                     "dragDisabled": true,
                   }
                   array.push(temp)
+                  pidArray.push(temp.upperMenuNm)
                   var child = temp
                   var parent = array.find(tmp => tmp.id === child.pid)
                   
@@ -75,7 +103,8 @@ export default {
                       break
                   }
                 }
-                commit('updateState', tree)
+                commit('updatePidOptions', pidArray)
+                commit('updateMenus', tree)
           })
         }
     },

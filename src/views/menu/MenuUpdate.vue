@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{form}}
         <b-form @submit="onSubmit">
             <b-row>
                 <b-col cols="6">
@@ -24,7 +23,7 @@
                         <b-form-select
                         id="input-2"
                         v-model="form.useAt"
-                        :options="useAt"
+                        :options="useAtOptions"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -38,8 +37,8 @@
                     label-for="input-3">
                         <b-form-select
                         id="input-3"
-                        v-model="form.pid"
-                        :options="pid"
+                        v-model="form.upperMenuNm"
+                        :options="pidOptions"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -51,8 +50,8 @@
                     label-for="input-4">
                         <b-form-select
                         id="input-4"
-                        v-model="form.useAt"
-                        :options="useAt"
+                        v-model="form.url"
+                        :options="pageOptions"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -83,12 +82,17 @@ export default {
     computed :{
         form(){
             return this.$store.state.menu.menu
-        }
+        },
+        pidOptions(){
+            return this.$store.state.menu.pidOptions
+        },
+        pageOptions(){
+            return this.$store.state.menu.pageOptions
+        },
     },
     data() {
         return {
-            useAt: ['사용', '미사용'],
-            
+            useAtOptions: ['사용', '미사용'],
         }
     },
     methods: {
