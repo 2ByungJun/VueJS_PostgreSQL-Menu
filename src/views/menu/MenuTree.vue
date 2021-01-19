@@ -55,7 +55,6 @@ export default {
     },
     methods: {
         onClick(params) {
-            console.log('---onClick---')
             this.$store.commit('menu/onClickMenu', params)
         },
         onDel(node) {

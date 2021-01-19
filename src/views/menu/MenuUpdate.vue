@@ -1,6 +1,7 @@
 <template>
     <div>
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        {{form}}
+        <b-form @submit="onSubmit">
             <b-row>
                 <b-col cols="6">
                     <b-form-group
@@ -37,8 +38,8 @@
                     label-for="input-3">
                         <b-form-select
                         id="input-3"
-                        v-model="form.useAt"
-                        :options="useAt"
+                        v-model="form.pid"
+                        :options="pid"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -65,19 +66,7 @@
                     label-for="input-5">
                         <b-form-input
                         id="input-5"
-                        v-model="form.pid"
-                        required
-                        ></b-form-input>
-                    </b-form-group>
-                </b-col>
-                <b-col cols="6">
-                    <b-form-group 
-                    id="input-group-5" 
-                    label="메뉴아이디" 
-                    label-for="input-5">
-                        <b-form-input
-                        id="input-5"
-                        v-model="form.id"
+                        v-model="form.colOrd"
                         required
                         ></b-form-input>
                     </b-form-group>
@@ -99,27 +88,14 @@ export default {
     data() {
         return {
             useAt: ['사용', '미사용'],
-            show: true
+            
         }
     },
     methods: {
-    onSubmit(event) {
-        event.preventDefault()
-        alert(JSON.stringify(this.form))
-    },
-    onReset(event) {
-        event.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-        this.show = true
-        })
-    }
+        onSubmit(event) {
+            event.preventDefault()
+            alert(JSON.stringify(this.form))
+        },
     }
 }
 </script>
