@@ -3,7 +3,9 @@ import axios from "axios"
 export default {
     namespaced: true, 
     state: () => ({
+        // MenuTree
         menus: [],
+        // MenuUpdate
         menu: {
           id: '',
           isLeaf: '',
@@ -17,7 +19,11 @@ export default {
         },
         pidOptions : [],
         pageOptions: [],
-        page: [],
+        // PageTable
+        menuPages: [],
+        // PageInsertTable
+        noConnectMenuPages: [],
+        pageInsertShow: false,
     }),
     mutations: {
         updateMenus(state, payload){ // 메뉴정보
@@ -30,7 +36,10 @@ export default {
           state.pageOptions = payload
         },
         updatePageList(state, payload){ // 페이지 정보> 페이지 데이터
-          state.page = payload
+          state.menuPages = payload
+        },
+        updateNoConnectMenuPages(state, payload){
+          state.noConnectMenuPages = payload
         },
         // MenuUpdate에서 메뉴를 클릭시 정보를 전달
         onClickMenu(state, payload){
@@ -46,26 +55,40 @@ export default {
         },
     },
     actions: {
+        // 메뉴와 연결 안된 페이지 리스트 호출 액션
+        async selectNotConnectPage({commit}){
+          await axios.get('vue/selectNotConnectPage').then((res) => {
+            commit('updateNoConnectMenuPages', res.data)
+          })
+        },
+
         // 전체 페이지 url 
-        // async selectPidOptions({commit}, data){
-        //   console.log(data)
-        //   await commit('onClickMenu', data)
-        //   await axios.get('/vue/selectPageUrlList').then((res) => {
-        //     var data = res.data
-        //     var array = new Array()
-        //     for(var i=0; i<data.length; i++){
-        //       array.push(data[i].url)
-        //     }
-        //     commit('updatePageOptions', array)
-        //   })
-        // },
+        async selectPidOptions({commit}){
+          await axios.get('/vue/selectUpperMenuList').then((res) => {
+            var data = res.data
+            var array = new Array()
+            for(var i=0; i<data.length; i++){
+              array.push(data[i].menuNm)
+            }
+            commit('updatePidOptions', array)
+          })
+        },
 
         // 메뉴 클릭시 관련 페이지 정보 호출 액션
-        async selectPageOptions({commit}, data){
-          await commit('onClickMenu', data) 
-            await axios.post('/vue/selectPageOptionList', data.id ).then((res) => {
-              commit('updatePageList', res.data)
-            })
+        async onclickMenu({commit}, clickData){
+          await commit('onClickMenu', clickData) // 페이지 정보 변이
+          await axios.post('/vue/selectPageOptionList', clickData.id ).then((res) => {
+            commit('updatePageList', res.data) // 등록된 페이지 변이
+          })
+          await axios.get('vue/selectNotConnectPage').then((res) => {
+            var array = new Array()
+            var data = res.data
+            array.push(clickData.url)
+            for(var i=0; i<data.length; i++){
+              array.push(data[i].url)
+            }
+            commit('updatePageOptions', array)
+          })
         },
         
         // 메뉴 리스트 트리형태 호출 액션

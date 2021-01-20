@@ -28,20 +28,23 @@
 <script>
 export default {
     data() {
-    return {
-        fields: [
-        { key: 'selected', sortable: false },
-        { key: 'pageNm', sortable: true },
-        { key: 'url', sortable: true },
-        ],
-        selected: '',
-        result: '',
-    }
+        return {
+            fields: [
+            { key: 'selected', sortable: false },
+            { key: 'pageNm', sortable: true },
+            { key: 'url', sortable: true },
+            ],
+            selected: '',
+            result: '',
+        }
     },
     computed:{
         items(){
-            return this.$store.state.menu.menuPages
+            return this.$store.state.menu.noConnectMenuPages
         },
+    },
+    mounted() {
+        this.$store.dispatch('menu/selectNotConnectPage')
     },
     watch: {
         selected: function(val){

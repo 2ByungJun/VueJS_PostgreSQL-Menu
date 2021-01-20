@@ -71,8 +71,9 @@
                     </b-form-group>
                 </b-col>
             </b-row>
-
-            <b-button type="submit" variant="primary">저장</b-button>
+            <div style="text-align-last: center;">
+                <b-button type="submit" variant="outline-info">저장</b-button>
+            </div>
         </b-form>
     </div>
 </template>
@@ -90,8 +91,8 @@ export default {
             return this.$store.state.menu.pageOptions
         },
     },
-    created(){
-        //this.$store.dispatch('menu/selectPidOptions')
+    mounted(){
+        this.$store.dispatch('menu/selectPidOptions')
     },
     data() {
         return {

@@ -52,7 +52,7 @@ export default {
                 console.log(params)
             }else{
                 // 기존 항목 클릭시
-                this.$store.dispatch('menu/selectPageOptions', params)
+                this.$store.dispatch('menu/onclickMenu', params)
             }
         },
         onDel(node) {
