@@ -55,6 +55,24 @@ export default {
         },
     },
     actions: {
+        // 메뉴 파일 삭제
+        async deleteMenu({dispatch}, data){
+          await axios.post('vue/deleteMenu', {'menuSeq' : data.id})
+          await dispatch('selectMenus')
+        },
+
+        // 메뉴 파일 삽입
+        async insertMenu({dispatch}, data){
+          console.log(data)
+          var isLeaf = data.isLeaf == true ? 'Y' : 'N'
+          await axios.post('vue/insertMenu', {
+            'upperMenuSeq' : data.pid, 
+            'registId' : 'admin', 
+            'isLeaf' : isLeaf
+          })
+          await dispatch('selectMenus')
+        },
+
         // 메뉴와 연결 안된 페이지 리스트 호출 액션
         async selectNotConnectPage({commit}){
           await axios.get('vue/selectNotConnectPage').then((res) => {
@@ -126,12 +144,7 @@ export default {
                     case "1":
                       tree.push(child)
                       break
-                    case "2":
-                      if(parent){
-                        parent.children.push(child)
-                      }
-                      break
-                    case "3":
+                    default:
                       if(parent){
                         parent.children.push(child)
                       }
@@ -145,3 +158,9 @@ export default {
     getters: {
     }
 }
+
+// dragDisabled: true,
+// addTreeNodeDisabled: true,
+// addLeafNodeDisabled: true,
+// editNodeDisabled: true,
+// delNodeDisabled: true,

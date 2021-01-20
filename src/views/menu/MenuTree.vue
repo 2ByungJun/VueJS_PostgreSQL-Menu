@@ -14,10 +14,10 @@
         <template v-slot:leafNameDisplay="slotProps">
             <span>{{ slotProps.model.name }}</span>
         </template>
-        <span class="icon" slot="addTreeNodeIcon" style="display:none">📂</span>
+        <span class="icon" slot="addTreeNodeIcon">📂</span>
         <span class="icon" slot="addLeafNodeIcon">📃</span>
-        <span class="icon" slot="editNodeIcon">📝</span>
-        <span class="icon" slot="delNodeIcon">✂️</span>
+        <span class="icon" slot="editNodeIcon" style="display:none">📝</span>
+        <span class="icon" slot="delNodeIcon">❌</span>
         <span class="icon" slot="leafNodeIcon">📃</span>
         <span class="icon" slot="treeNodeIcon">📂</span>
         </vue-tree-list>
@@ -56,9 +56,7 @@ export default {
             }
         },
         onDel(node) {
-            console.log('---onDel---')
-            console.log(node)
-            node.remove()
+            this.$store.dispatch('menu/deleteMenu', node)
         },
         onChangeName(params) {
             if(params.eventTpye == "blur"){
@@ -67,8 +65,7 @@ export default {
             }
         },
         onAddNode(params) {
-            console.log('---onAddNode---')
-            console.log(params)
+            this.$store.dispatch('menu/insertMenu', params)
         },
         addNode() {
             console.log('---addNode---')
