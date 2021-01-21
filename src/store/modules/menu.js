@@ -107,7 +107,6 @@ export default {
 
         // 메뉴 삽입
         async insertMenu({dispatch}, data){
-          console.log('data', changeMenuVO(data))
           await axios.post('vue/insertMenu', changeMenuVO(data))
           await dispatch('selectMenus')
         },
@@ -134,14 +133,12 @@ export default {
                 'value' : data[i].menuSeq // 상위 메뉴 시퀀스
               })
             }
-            console.log(array)
             commit('updatePidOptions', array)
           })
         },
 
         // 메뉴 클릭시 관련 페이지 정보 호출 액션
         async onclickMenu({commit}, clickData){
-          console.log('clickData', clickData)
           // 메뉴 정보 업데이트
           await commit('onClickMenu', clickData)
           // 관련 페이지 정보 컴포넌트 테이블 리스트

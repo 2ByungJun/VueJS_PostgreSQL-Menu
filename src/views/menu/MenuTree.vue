@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-icon icon="folder-plus" font-scale="1.2" variant="warning" @click="addRootFolder"></b-icon>
-        <b-icon icon="file-earmark-plus" font-scale="1.2" variant="info" @click="addRootFile"></b-icon>
+        <b-icon icon="file-earmark-plus-fill" font-scale="1.2" variant="info" @click="addRootFile"></b-icon>
         <!-- default-expanded : true(펼쳐있는 상태)/false(접힌 상태) -->
         <vue-tree-list
             @click="onClick"
@@ -15,11 +15,11 @@
                 <span>{{ slotProps.model.name }}</span>
             </template>
             <span class="icon" slot="addTreeNodeIcon"><b-icon icon="folder-plus" font-scale="1.2" variant="warning"></b-icon></span>
-            <span class="icon" slot="addLeafNodeIcon"><b-icon icon="file-earmark-plus" font-scale="1.2" variant="info"></b-icon></span>
+            <span class="icon" slot="addLeafNodeIcon"><b-icon icon="file-earmark-plus-fill" font-scale="1.2" variant="info"></b-icon></span>
             <!-- <span class="icon" slot="editNodeIcon">📝</span> -->
             <span class="icon" slot="delNodeIcon"><b-icon icon="x-square-fill" font-scale="1.2" variant="danger"></b-icon></span>
-            <span class="icon" slot="leafNodeIcon"><b-icon icon="file-earmark" font-scale="1.2" variant="info"></b-icon></span>
-            <span class="icon" slot="treeNodeIcon"><b-icon icon="folder" font-scale="1.2" variant="warning"></b-icon></span>
+            <span class="icon" slot="leafNodeIcon"><b-icon icon="file-earmark-fill" font-scale="1.2" variant="info"></b-icon></span>
+            <span class="icon" slot="treeNodeIcon"><b-icon icon="folder-fill" font-scale="1.2" variant="warning"></b-icon></span>
         </vue-tree-list>
         <br><br>
     </div>
