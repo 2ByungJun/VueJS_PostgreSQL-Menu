@@ -90,8 +90,22 @@ export default {
           state.menu.colOrd = payload.colOrd
           state.menu.url = payload.url
         },
+        resetMenu(state){
+          state.menu = []
+        }
     },
     actions: {
+        // 루트 폴더,파일 삽입
+        async insertRootMenu({dispatch}, isLeaf){
+          var data = {
+            'upperMenuSeq' : 0,
+            'isLeaf': isLeaf,
+            'registId': 'admin',
+          }
+          await axios.post('vue/insertMenu', data )
+          await dispatch('selectMenus')
+        },
+
         // 메뉴 수정
         async updateMenu({dispatch}, data){
           // 변경된 pageSeq는 대표 URL에 따라서 백단에서 변경하고 있다.
@@ -111,14 +125,8 @@ export default {
           await dispatch('selectMenus')
         },
 
-        // 페이지 추가 컴포넌트
-        async selectNotConnectPage({commit}){
-          await axios.get('vue/selectNotConnectPage').then((res) => {
-            commit('updateNoConnectMenuPages', res.data)
-          })
-        },
-
-        // 상위 메뉴*
+        
+        // 상위 메뉴* selectBar
         async selectPidOptions({commit}){
           await axios.get('/vue/selectUpperMenuList').then((res) => {
             var data = res.data
@@ -137,15 +145,8 @@ export default {
           })
         },
 
-        // 메뉴 클릭시 관련 페이지 정보 호출 액션
-        async onclickMenu({commit}, clickData){
-          // 메뉴 정보 업데이트
-          await commit('onClickMenu', clickData)
-          // 관련 페이지 정보 컴포넌트 테이블 리스트
-          await axios.post('/vue/selectPageOptionList', clickData.id ).then((res) => {
-            commit('updatePageList', res.data) 
-          })
-          // 메뉴와 연결안된 페이지 리스트
+        // 대표 URL* selectBar
+        async selectPageOptions({commit}, clickData){
           await axios.get('vue/selectNotConnectPage').then((res) => {
             var data = res.data
             var array = []
@@ -155,13 +156,38 @@ export default {
             for(var i=0; i<data.length; i++){
               array.push(data[i].url)
             }
-            // 대표 URL*
             commit('updatePageOptions', array)
           })
         },
         
+        // 페이지 추가 컴포넌트
+        async selectNotConnectPage({commit}){
+          await axios.get('vue/selectNotConnectPage').then((res) => {
+            commit('updateNoConnectMenuPages', res.data)
+          })
+        },
+
+        // 페이지 정보 컴포넌트
+        async selectConnectPage({commit}, clickData){
+          await axios.post('/vue/selectPageOptionList', clickData.id ).then((res) => {
+            commit('updatePageList', res.data) 
+          })
+        },
+
+
+        // 메뉴 onclick
+        async onclickMenu({commit, dispatch}, clickData){
+          // 대표 URL* selectBar
+          await dispatch('selectPageOptions', clickData)
+          // 메뉴 정보 업데이트
+          await commit('onClickMenu', clickData)
+          // 관련 페이지 정보 컴포넌트 테이블 리스트
+          await dispatch('selectConnectPage', clickData)
+        },
+
+        
         // 메뉴 리스트 트리형태 호출 액션
-        async selectMenus({commit}){
+        async selectMenus({commit, dispatch}){
           await axios.get('/vue/selectMenuList').then((res) => {
               var data = res.data
               var tree = new Array()
@@ -191,6 +217,14 @@ export default {
                 }
                 commit('updateMenus', tree)
           })
+          await dispatch('init')
+        },
+
+        async init({commit, dispatch}){
+          await dispatch('selectPidOptions') // 상위메뉴 초기화
+          await dispatch('selectNotConnectPage') // 페이지추가 컴포넌트 초기화
+          await dispatch('selectConnectPage') // 페이지정보 컴포넌트 초기화
+          await commit('resetMenu') // 메뉴 초기화
         }
     },
     getters: {

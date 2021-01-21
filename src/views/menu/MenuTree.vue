@@ -57,10 +57,10 @@ export default {
             this.$store.dispatch('menu/insertMenu', params)
         },
         addRootFolder(){
-            alert("a")
+            this.$store.dispatch('menu/insertRootMenu', 'N')
         },
         addRootFile(){
-            alert("b")
+            this.$store.dispatch('menu/insertRootMenu', 'Y')
         },
     }
 }

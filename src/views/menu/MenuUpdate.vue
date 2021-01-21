@@ -41,7 +41,6 @@
                         :options="pidOptions"
                         value-field="value"
                         text-field="text"
-                        placeholer="-"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -49,14 +48,12 @@
                 <b-col cols="6">
                     <b-form-group 
                     id="input-group-4" 
-                    label="대표 URL*" 
+                    label="대표 URL" 
                     label-for="input-4">
                         <b-form-select
                         id="input-4"
                         v-model="form.url"
                         :options="pageOptions"
-                        placeholer="-"
-                        required
                         ></b-form-select>
                     </b-form-group>
                 </b-col>
