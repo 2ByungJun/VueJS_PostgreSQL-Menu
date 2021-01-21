@@ -30,9 +30,9 @@ export default {
     data() {
         return {
             fields: [
-            { key: 'selected', sortable: false },
-            { key: 'pageNm', sortable: true },
-            { key: 'url', sortable: true },
+            { key: 'pageNm', label: '페이지명', sortable: true },
+            { key: 'url', label: 'url', sortable: true },
+            { key: 'selected', label: '추가', sortable: false },
             ],
             selected: '',
             result: '',

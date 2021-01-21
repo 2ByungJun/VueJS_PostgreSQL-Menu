@@ -3,55 +3,43 @@
     <b-table
     :items="items"
     :fields="fields"
-    select-mode="single"
     responsive="sm"
-    ref="selectableTable"
-    selectable
-    @row-selected="onRowSelected"
     sort-icon-left
+    stacked="md"
+    show-empty
     >
-    <template #cell(selected)="{ rowSelected }">
-        <template v-if="rowSelected">
-        <span aria-hidden="true">&check;</span>
-        <span class="sr-only">Selected</span>
-        </template>
-        <template v-else>
-        <span aria-hidden="true">&nbsp;</span>
-        <span class="sr-only">Not selected</span>
-        </template>
+    <template #emptyfiltered="scope">
+        <h4>{{ scope.emptyText }}</h4>
+    </template>
+    <template #cell(actions)="row">
+        <b-button size="sm" @click="deletePage(row.item)" class="mr-1">삭제</b-button>
     </template>
     </b-table>
-    result : {{result}}
 </div>
 </template>
 
 <script>
 export default {
     data() {
-    return {
-        fields: [
-        { key: 'selected', sortable: false },
-        { key: 'pageNm', sortable: true },
-        { key: 'url', sortable: true },
-        ],
-        selected: '',
-        result: '',
-    }
+        return {
+            fields: [
+                { key: 'pageNm', label: '페이지명', sortable: true },
+                { key: 'url', label: 'url', sortable: true },
+                { key: 'actions', label: '삭제', sortable: false },
+            ],
+        }
     },
     computed:{
         items(){
             return this.$store.state.menu.menuPages
         },
-    },
-    watch: {
-        selected: function(val){
-            this.result = val[0]
-            this.$emit('selected-page', val[0])
+        menu(){
+            return this.$store.state.menu.menu
         }
     },
     methods: {
-        onRowSelected(items) {
-            this.selected = items
+        deletePage(item) {
+            this.$store.dispatch('menu/deleteMenuPage', item)
         },
     }
 }

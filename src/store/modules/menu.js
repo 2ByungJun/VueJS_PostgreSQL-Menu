@@ -98,9 +98,16 @@ export default {
         },
     },
     actions: {
+        // 페이지 정보 > 삭제버튼
+        async deleteMenuPage({dispatch}, data){
+          axios.post('vue/deleteMenuPage', data)
+          await dispatch('selectMenus')
+        },
+      
         // 루트 폴더,파일 삽입
         async insertRootMenu({dispatch}, isLeaf){
           await axios.post('vue/insertMenu', {
+            'pageSeq' : 0,
             'upperMenuSeq' : 0,
             'isLeaf': isLeaf,
             'registId': 'admin',

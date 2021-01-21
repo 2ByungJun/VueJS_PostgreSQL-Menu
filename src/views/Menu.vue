@@ -19,7 +19,7 @@
         <b-button type="button" @click="onCloseAddPage" variant="outline-secondary">페이지 닫기</b-button>
       </div>
       <div v-else>
-        <b-button type="button" @click="onClickAddPage" variant="outline-info">페이지 추가</b-button>
+        <b-button type="button" @click="onClickAddPage" variant="info">페이지 추가</b-button>
       </div>
       <div v-if="pageInsertShow">
         <b-card title="페이지 추가">

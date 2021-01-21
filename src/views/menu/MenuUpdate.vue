@@ -73,7 +73,7 @@
                 </b-col>
             </b-row>
             <div style="text-align-last: center;">
-                <b-button type="submit" variant="outline-info">저장</b-button>
+                <b-button type="submit" variant="info">저장</b-button>
             </div>
         </b-form>
     </div>
