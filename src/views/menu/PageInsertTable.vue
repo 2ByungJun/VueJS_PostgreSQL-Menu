@@ -43,9 +43,6 @@ export default {
             return this.$store.state.menu.noConnectMenuPages
         },
     },
-    mounted() {
-        this.$store.dispatch('menu/selectNotConnectPage')
-    },
     watch: {
         selected: function(val){
             this.result = val[0]

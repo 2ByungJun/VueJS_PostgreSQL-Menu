@@ -92,17 +92,19 @@ export default {
         },
         resetMenu(state){
           state.menu = []
-        }
+        },
+        resetPageTable(state){
+          state.menuPages = []
+        },
     },
     actions: {
         // 루트 폴더,파일 삽입
         async insertRootMenu({dispatch}, isLeaf){
-          var data = {
+          await axios.post('vue/insertMenu', {
             'upperMenuSeq' : 0,
             'isLeaf': isLeaf,
             'registId': 'admin',
-          }
-          await axios.post('vue/insertMenu', data )
+          })
           await dispatch('selectMenus')
         },
 
@@ -130,7 +132,7 @@ export default {
         async selectPidOptions({commit}){
           await axios.get('/vue/selectUpperMenuList').then((res) => {
             var data = res.data
-            var array = new Array()
+            var array = []
             array.push({
               'text' : 'root',
               'value' : '0'
@@ -190,8 +192,8 @@ export default {
         async selectMenus({commit, dispatch}){
           await axios.get('/vue/selectMenuList').then((res) => {
               var data = res.data
-              var tree = new Array()
-              var array = new Array()
+              var tree = []
+              var array = []
               for(var i=0; i<data.length; i++){
                 /*
                  * temp : vue-tree-list용 가공객체
@@ -217,14 +219,16 @@ export default {
                 }
                 commit('updateMenus', tree)
           })
+          // 초기화
           await dispatch('init')
         },
 
-        async init({commit, dispatch}){
+        // 초기화
+        async init({dispatch, commit}){
           await dispatch('selectPidOptions') // 상위메뉴 초기화
           await dispatch('selectNotConnectPage') // 페이지추가 컴포넌트 초기화
-          await dispatch('selectConnectPage') // 페이지정보 컴포넌트 초기화
           await commit('resetMenu') // 메뉴 초기화
+          await commit('resetPageTable') // 페이지 정보 컴포넌트 초기화
         }
     },
     getters: {
