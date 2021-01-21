@@ -10,7 +10,7 @@
                         <b-form-input
                         id="input-1"
                         v-model="form.name"
-                        placeholder="메뉴명"
+                        placeholder="메뉴 클릭"
                         required
                         ></b-form-input>
                     </b-form-group>
@@ -37,8 +37,11 @@
                     label-for="input-3">
                         <b-form-select
                         id="input-3"
-                        v-model="form.upperMenuNm"
+                        v-model="form.pid"
                         :options="pidOptions"
+                        value-field="value"
+                        text-field="text"
+                        placeholer="-"
                         required
                         ></b-form-select>
                     </b-form-group>
@@ -52,6 +55,7 @@
                         id="input-4"
                         v-model="form.url"
                         :options="pageOptions"
+                        placeholer="-"
                         required
                         ></b-form-select>
                     </b-form-group>
