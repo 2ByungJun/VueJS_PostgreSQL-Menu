@@ -1,5 +1,43 @@
 import axios from "axios"
 
+function changeMenuVO(data){
+  return {
+    "menuSeq" : data.id,
+    "upperMenuSeq" : data.pid,
+    "isLeaf" : data.isLeaf == true ? 'Y' : 'N',
+    "pageSeq" : data.pageSeq,
+    "menuNm" : data.name,
+    "url" : data.url,
+    "useAt" : data.useAt,
+    "colOrd" : data.colOrd,
+    "registId" : 'admin'
+  }
+}
+// dragDisabled: true,
+// addTreeNodeDisabled: true,
+// addLeafNodeDisabled: true,
+// editNodeDisabled: true,
+// delNodeDisabled: true,
+function changeTreeVO(data){
+  return {
+    /*menuSeq*/"id": parseInt(data.menuSeq), 
+    /*isLeaf*/ "isLeaf": data.isLeaf == "Y" ? true : false,
+    /*menuNm*/ "name": data.menuNm, 
+/*uppperMenuSeq*/"pid": parseInt(data.upperMenuSeq), 
+      /*ustAt*/"useAt": data.useAt == "Y" ? "사용" : "미사용",
+        /*url*/"url": data.url,
+    /*colOrd*/ "colOrd": data.colOrd,
+    /*pageSeq*/"pageSeq": data.pageSeq,
+/*upperMenuNm*/"upperMenuNm": data.upperMenuNm,
+      /*level*/"level": data.level,
+  /*드래그방지*/"dragDisabled": true,
+  /*수정방지*/  "editNodeDisabled": true,
+  /*폴더생성방지*/ "addTreeNodeDisabled" : parseInt(data.level) > 1 ? true : false,
+  /*파일생성방지*/ "addLeafNodeDisabled" : data.level == '3' ? true : false,
+              "children": [],
+  }
+}
+
 export default {
     namespaced: true, 
     state: () => ({
@@ -55,21 +93,22 @@ export default {
         },
     },
     actions: {
+        // 메뉴 파일 수정
+        async updateMenu({dispatch}, data){
+          console.log('result', changeMenuVO(data))
+          await dispatch('selectMenus')
+        },
+
         // 메뉴 파일 삭제
         async deleteMenu({dispatch}, data){
-          await axios.post('vue/deleteMenu', {'menuSeq' : data.id})
+          await axios.post('vue/deleteMenu', changeMenuVO(data))
           await dispatch('selectMenus')
         },
 
         // 메뉴 파일 삽입
         async insertMenu({dispatch}, data){
-          console.log(data)
-          var isLeaf = data.isLeaf == true ? 'Y' : 'N'
-          await axios.post('vue/insertMenu', {
-            'upperMenuSeq' : data.pid, 
-            'registId' : 'admin', 
-            'isLeaf' : isLeaf
-          })
+          console.log('data', changeMenuVO(data))
+          await axios.post('vue/insertMenu', changeMenuVO(data))
           await dispatch('selectMenus')
         },
 
@@ -99,12 +138,13 @@ export default {
             commit('updatePageList', res.data) // 등록된 페이지 변이
           })
           await axios.get('vue/selectNotConnectPage').then((res) => {
-            var array = new Array()
             var data = res.data
+            var array = []
             array.push(clickData.url)
             for(var i=0; i<data.length; i++){
               array.push(data[i].url)
             }
+            console.log('array', array)
             commit('updatePageOptions', array)
           })
         },
@@ -121,20 +161,7 @@ export default {
                  * child : 가공된 객체(temp)를 담음(파일)
                  * parent : child의 pid와 일치하는 id값을 가져옴(폴더)
                  */
-                  var temp = {
-          /*menuSeq*/"id": parseInt(data[i].menuSeq), 
-          /*isLeaf*/ "isLeaf": data[i].isLeaf == "Y" ? true : false,
-          /*menuNm*/ "name": data[i].menuNm, 
-    /*uppperMenuSeq*/"pid": parseInt(data[i].upperMenuSeq), 
-            /*ustAt*/"useAt": data[i].useAt == "Y" ? "사용" : "미사용",
-              /*url*/"url": data[i].url,
-          /*colOrd*/ "colOrd": data[i].colOrd,
-          /*pageSeq*/"pageSeq": data[i].pageSeq,
-      /*upperMenuNm*/"upperMenuNm": data[i].upperMenuNm,
-            /*level*/"level": data[i].level,
-        /*드래그방지*/"dragDisabled": true,
-                    "children": [],
-                  }
+                  var temp = changeTreeVO(data[i])
                   array.push(temp)
                   var child = temp
                   var parent = array.find(tmp => tmp.id === child.pid)
@@ -158,9 +185,3 @@ export default {
     getters: {
     }
 }
-
-// dragDisabled: true,
-// addTreeNodeDisabled: true,
-// addLeafNodeDisabled: true,
-// editNodeDisabled: true,
-// delNodeDisabled: true,
