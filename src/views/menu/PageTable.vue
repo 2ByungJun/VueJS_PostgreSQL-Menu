@@ -39,7 +39,14 @@ export default {
     },
     methods: {
         deletePage(item) {
-            this.$store.dispatch('menu/deleteMenuPage', item)
+            this.$store.dispatch('menu/deleteMenuPage', {
+                'deletePage' : {
+                    'menuSeq' : this.menu.id,
+                    'pageSeq' : parseInt(item.pageSeq),
+                    'registId' : 'admin'
+                },
+                'menu' : this.menu
+            })
         },
     }
 }

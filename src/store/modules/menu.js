@@ -61,7 +61,9 @@ export default {
         menuPages: [],
         // PageInsertTable
         noConnectMenuPages: [],
+        // Menu
         pageInsertShow: false,
+        pageInsertDivShow: false,
     }),
     mutations: {
         updateMenus(state, payload){ // 메뉴정보
@@ -96,12 +98,25 @@ export default {
         resetPageTable(state){
           state.menuPages = []
         },
+        showPageInsertBtn(state){
+          state.pageInsertDivShow = true
+        },
+        hidePageInsertBtn(state){
+          state.pageInsertDivShow = false
+        }
     },
     actions: {
+        // 페이지 추가 > 추가버튼
+        async insertMenuPage({dispatch}, data){
+          // 컴포넌트 데이터 전달 - registId : 'admin'가 포함되는 중
+          await axios.post('vue/insertMenuPage', data.insertPage)
+          await dispatch('onclickMenu', data.menu)
+        },
+
         // 페이지 정보 > 삭제버튼
         async deleteMenuPage({dispatch}, data){
-          axios.post('vue/deleteMenuPage', data)
-          await dispatch('selectMenus')
+          await axios.post('vue/deleteMenuPage', data.deletePage)
+          await dispatch('onclickMenu', data.menu)
         },
       
         // 루트 폴더,파일 삽입
@@ -192,6 +207,10 @@ export default {
           await commit('onClickMenu', clickData)
           // 관련 페이지 정보 컴포넌트 테이블 리스트
           await dispatch('selectConnectPage', clickData)
+          // 페이지 추가 컴포넌트 업데이트
+          await dispatch('selectNotConnectPage')
+          // 페이지 추가버튼 보이기
+          await commit('showPageInsertBtn')
         },
 
         
@@ -236,6 +255,7 @@ export default {
           await dispatch('selectNotConnectPage') // 페이지추가 컴포넌트 초기화
           await commit('resetMenu') // 메뉴 초기화
           await commit('resetPageTable') // 페이지 정보 컴포넌트 초기화
+          await commit('hidePageInsertBtn') // 페이지추가 버튼 감추기
         }
     },
     getters: {

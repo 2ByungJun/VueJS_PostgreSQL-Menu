@@ -72,8 +72,10 @@
                     </b-form-group>
                 </b-col>
             </b-row>
-            <div style="text-align-last: center;">
-                <b-button type="submit" variant="info">저장</b-button>
+            <div v-if="pageInsertDivShow">
+                <div style="text-align-last: center;">
+                    <b-button type="submit" variant="info">저장</b-button>
+                </div>
             </div>
         </b-form>
     </div>
@@ -91,6 +93,9 @@ export default {
         pageOptions(){
             return this.$store.state.menu.pageOptions
         },
+        pageInsertDivShow(){
+            return this.$store.state.menu.pageInsertDivShow
+        }
     },
     mounted(){
         this.$store.dispatch('menu/selectPidOptions')

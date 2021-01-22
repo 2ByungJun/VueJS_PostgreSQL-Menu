@@ -15,11 +15,13 @@
         <MenuUpdate />
       </b-card>
       <br>
-      <div v-if="pageInsertShow">
-        <b-button type="button" @click="onCloseAddPage" variant="outline-secondary">페이지 닫기</b-button>
-      </div>
-      <div v-else>
-        <b-button type="button" @click="onClickAddPage" variant="info">페이지 추가</b-button>
+      <div v-if="pageInsertDivShow">
+        <div v-if="pageInsertShow">
+          <b-button type="button" @click="onCloseAddPage" variant="outline-secondary">페이지 닫기</b-button>
+        </div>
+        <div v-else>
+          <b-button type="button" @click="onClickAddPage" variant="info">페이지 추가</b-button>
+        </div>
       </div>
       <div v-if="pageInsertShow">
         <b-card title="페이지 추가">
@@ -51,6 +53,9 @@ export default {
   computed:{
     pageInsertShow(){
       return this.$store.state.menu.pageInsertShow
+    },
+    pageInsertDivShow(){
+      return this.$store.state.menu.pageInsertDivShow
     }
   },
   methods: {
@@ -59,7 +64,7 @@ export default {
     },
     onCloseAddPage(){
       this.$store.state.menu.pageInsertShow = false
-    }
+    },
   }
 }
 </script>
