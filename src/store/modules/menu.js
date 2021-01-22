@@ -221,7 +221,7 @@ export default {
 
         // 페이지 정보 컴포넌트
         async selectConnectPage({commit}, clickData){
-          await axios.post('/vue/selectPageOptionList', clickData.id ).then((res) => {
+          await axios.post('/vue/selectPageOptionList', changeMenuVO(clickData)).then((res) => {
             commit('updatePageList', res.data) 
           })
         },
