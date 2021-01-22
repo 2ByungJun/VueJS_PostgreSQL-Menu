@@ -272,6 +272,8 @@ export default {
                   }
                 }
                 commit('updateMenus', tree)
+          }).catch((e) => {
+            swalToastAlert({icon:'error', title: e})
           })
           // 초기화
           await dispatch('init')
