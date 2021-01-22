@@ -132,8 +132,13 @@ export default {
 
         // 메뉴 수정
         async updateMenu({dispatch}, data){
+          console.log('data', data)
           // 변경된 pageSeq는 대표 URL에 따라서 백단에서 변경하고 있다.
-          await axios.post('/vue/updateMenu', changeMenuVO(data))
+          await axios.post('/vue/updateMenu', changeMenuVO(data)).then(() => {
+            dispatch('ToastAlert', {icon: 'success', title: '수정되었습니다.'}, {root: true})
+          }).catch((e)=>{
+            dispatch('ToastAlert', {icon: 'error', title: e}, {root: true})
+          })
           await dispatch('selectMenus')
         },
 
