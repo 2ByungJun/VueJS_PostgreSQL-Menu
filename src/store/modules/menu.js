@@ -1,4 +1,5 @@
 import axios from "axios"
+import {swalToastAlert, swalConfirm} from "@/plugins/custom-swal.js"
 
 function changeMenuVO(data){
   return {
@@ -109,13 +110,21 @@ export default {
         // 페이지 추가 > 추가버튼
         async insertMenuPage({dispatch}, data){
           // 컴포넌트 데이터 전달 - registId : 'admin'가 포함되는 중
-          await axios.post('vue/insertMenuPage', data.insertPage)
+          await axios.post('vue/insertMenuPage', data.insertPage).then(() => {
+            swalToastAlert({title: '페이지가 추가되었습니다.'})
+          }).catch((e)=>{
+            swalToastAlert({icon: 'error', title: e})
+          })
           await dispatch('onclickMenu', data.menu)
         },
 
         // 페이지 정보 > 삭제버튼
         async deleteMenuPage({dispatch}, data){
-          await axios.post('vue/deleteMenuPage', data.deletePage)
+          await axios.post('vue/deleteMenuPage', data.deletePage).then(() => {
+            swalToastAlert({title: '페이지가 삭제되었습니다.'})
+          }).catch((e)=>{
+            swalToastAlert({icon: 'error', title: e})
+          })
           await dispatch('onclickMenu', data.menu)
         },
       
@@ -126,31 +135,45 @@ export default {
             'upperMenuSeq' : 0,
             'isLeaf': isLeaf,
             'registId': 'admin',
+          }).then(() => {
+            swalToastAlert({title: '생성되었습니다.'})
+          }).catch((e)=>{
+            swalToastAlert({icon: 'error', title: e})
           })
           await dispatch('selectMenus')
         },
 
         // 메뉴 수정
         async updateMenu({dispatch}, data){
-          console.log('data', data)
           // 변경된 pageSeq는 대표 URL에 따라서 백단에서 변경하고 있다.
           await axios.post('/vue/updateMenu', changeMenuVO(data)).then(() => {
-            dispatch('ToastAlert', {icon: 'success', title: '수정되었습니다.'}, {root: true})
+            swalToastAlert({title: '수정되었습니다.'})
           }).catch((e)=>{
-            dispatch('ToastAlert', {icon: 'error', title: e}, {root: true})
+            swalToastAlert({icon: 'error', title: e})
           })
           await dispatch('selectMenus')
         },
 
         // 메뉴 삭제
         async deleteMenu({dispatch}, data){
-          await axios.post('vue/deleteMenu', changeMenuVO(data))
-          await dispatch('selectMenus')
+          swalConfirm().then( async (result)=>{
+            if(result.value){
+              await axios.post('vue/deleteMenu', changeMenuVO(data))
+              dispatch('selectMenus')
+              swalToastAlert({title: '삭제되었습니다.'})
+            }else{
+              swalToastAlert({icon: 'error', title: '취소되었습니다.'})
+            }
+          })
         },
 
         // 메뉴 삽입
         async insertMenu({dispatch}, data){
-          await axios.post('vue/insertMenu', changeMenuVO(data))
+          await axios.post('vue/insertMenu', changeMenuVO(data)).then(() => {
+            swalToastAlert({title: '생성되었습니다.'})
+          }).catch((e)=>{
+            swalToastAlert({icon: 'error', title: e})
+          })
           await dispatch('selectMenus')
         },
 
