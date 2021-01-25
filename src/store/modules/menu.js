@@ -13,6 +13,7 @@ function changeMenuVO(data){
     "colOrd" : data.colOrd,
     "registId" : 'admin',
     "updateId" : 'admin',
+    "prevPageSeq" : data.prevPageSeq,
   }
 }
 // dragDisabled: true,
@@ -55,6 +56,7 @@ export default {
           pageSeq:'',
           colOrd: '',
           url: '',
+          prevPageSeq: '',
         },
         pidOptions : [],
         pageOptions: [],
@@ -90,6 +92,7 @@ export default {
           state.menu.pid = payload.pid
           state.menu.useAt = payload.useAt
           state.menu.pageSeq = payload.pageSeq
+          state.menu.prevPageSeq = payload.pageSeq
           state.menu.colOrd = payload.colOrd
           state.menu.url = payload.url
         },
@@ -145,7 +148,6 @@ export default {
 
         // 메뉴 수정
         async updateMenu({dispatch}, data){
-          // 변경된 pageSeq는 대표 URL에 따라서 백단에서 변경하고 있다.
           await axios.post('/vue/updateMenu', changeMenuVO(data)).then(() => {
             swalToastAlert({title: '수정되었습니다.'})
           }).catch((e)=>{
@@ -197,16 +199,26 @@ export default {
           })
         },
 
-        // 대표 URL* selectBar
+        // 대표 URL selectBar
         async selectPageOptions({commit}, clickData){
           await axios.get('vue/selectNotConnectPage').then((res) => {
             var data = res.data
             var array = []
             if(clickData.url != null){
-              array.push(clickData.url)
+              array.push({
+                'text' : clickData.url,
+                'value' : clickData.pageSeq
+              })
             }
+            array.push({
+              'text' : '---',
+              'value' : 0
+            })
             for(var i=0; i<data.length; i++){
-              array.push(data[i].url)
+              array.push({
+                'text' : data[i].url,
+                'value' : data[i].pageSeq
+              })
             }
             commit('updatePageOptions', array)
           })

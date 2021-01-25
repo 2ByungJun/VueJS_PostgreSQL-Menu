@@ -52,8 +52,10 @@
                     label-for="input-4">
                         <b-form-select
                         id="input-4"
-                        v-model="form.url"
+                        v-model="form.pageSeq"
                         :options="pageOptions"
+                        value-field="value"
+                        text-field="text"
                         ></b-form-select>
                     </b-form-group>
                 </b-col>
